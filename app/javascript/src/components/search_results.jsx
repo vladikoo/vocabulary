@@ -2,19 +2,49 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Word from "./word";
 
-const SearchResults = ({ words, onWordDeleteClick }) => (
-  <div className="search-results">
-    <ul>
-      {words.map((word) =>
-        <Word
-          key={word.id}
-          text={word.text}
-          onDeleteClick={() => onWordDeleteClick(word.id)}
-        />
-      )}
-    </ul>
-  </div>
-);
+const SearchResults = (props) => {
+  const {
+    words,
+    onWordDeleteClick,
+    searchWasTriggered,
+    searchValue,
+    onAddWordBtnClick,
+  } = props;
+
+  let content = null;
+
+  if (words.length) {
+    content = (
+      <ul>
+        {words.map((word) =>
+          <Word
+            key={word.id}
+            text={word.text}
+            onDeleteClick={() => onWordDeleteClick(word.id)}
+          />
+        )}
+      </ul>
+    );
+  } else if (searchWasTriggered) {
+    content = (
+      <>
+        <p>No search results for: <b>{searchValue}</b></p>
+        <button
+          type="button"
+          onClick={onAddWordBtnClick}
+        >
+          Add to the vocabulary
+        </button>
+      </>
+    );
+  }
+
+  return (
+    <div className="search-results">
+      {content}
+    </div>
+  );
+};
 
 SearchResults.propTypes = {
   words: PropTypes.arrayOf(
@@ -24,6 +54,7 @@ SearchResults.propTypes = {
     }).isRequired,
   ),
   onWordDeleteClick: PropTypes.func.isRequired,
+  searchWasTriggered: PropTypes.bool.isRequired,
 };
 
 SearchResults.defaultProps = {
