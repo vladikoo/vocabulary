@@ -6,6 +6,11 @@ const SearchContainer = () => {
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
+  const resetSearchValueAndResults = () => {
+    setSearchValue('');
+    setSearchResults([]);
+  };
+
   const handleSearchRequest = async (e) => {
     e.preventDefault();
 
@@ -38,6 +43,7 @@ const SearchContainer = () => {
         onSubmit={handleSearchRequest}
         inputValue={searchValue}
         onInputChange={setSearchValue}
+        onClearBtnCLick={resetSearchValueAndResults}
       />
       <SearchResults
         words={searchResults}
