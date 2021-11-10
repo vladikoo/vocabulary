@@ -1,12 +1,8 @@
 import React from 'react';
-import Hello from "./hello_react";
+import SearchContainer  from '../containers/search_container';
 
 const App = () => (
-  <>
-    <Hello name="React" />
-    <Hello name="Rails" />
-    <Hello />
-  </>
+  <SearchContainer />
 );
 
 export default App;
