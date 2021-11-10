@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SearchResults from '../components/search_results';
 import SearchForm from '../components/search_form';
+import csrfToken from '../utils';
 
 const SearchContainer = () => {
   const [searchValue, setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [searchWasTriggered, setSearchWasTriggered] = useState(false);
+  const searchInputRef = useRef(null);
 
   useEffect(() => {
     if (searchWasTriggered) {
@@ -16,12 +18,13 @@ const SearchContainer = () => {
   const resetSearchValueAndResults = () => {
     setSearchValue('');
     setSearchResults([]);
+    searchInputRef.current.focus();
   };
 
   const handleSearchRequest = async (e) => {
     e.preventDefault();
 
-    // TODO: Disallow subsequent requests if searchValue is the same as before
+    if (searchWasTriggered) return null;
 
     const response = await fetch(`/api/words?search=${searchValue}`);
     const data = await response.json();
@@ -31,12 +34,10 @@ const SearchContainer = () => {
   };
 
   const handleWordDeleting = async (id) => {
-    // TODO: Extract to the helper
-    const csrfToken = document.getElementsByName('csrf-token')[0].content;
     const response = await fetch(`/api/words/${id}`, {
       method: 'DELETE',
       headers: {
-        'X-CSRF-TOKEN': csrfToken,
+        'X-CSRF-TOKEN': csrfToken(),
       },
     });
 
@@ -50,12 +51,10 @@ const SearchContainer = () => {
   };
 
   const handleWordCreating = async () => {
-    // TODO: Extract to the helper
-    const csrfToken = document.getElementsByName('csrf-token')[0].content;
     const response = await fetch(`/api/words`, {
       method: 'POST',
       headers: {
-        'X-CSRF-TOKEN': csrfToken,
+        'X-CSRF-TOKEN': csrfToken(),
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ word: { text: searchValue } }),
@@ -68,7 +67,7 @@ const SearchContainer = () => {
       alert('Word was successfully created!');
       setSearchResults([...searchResults, data])
       setSearchValue('');
-      // TODO: Move focus to input after removing
+      searchInputRef.current.focus();
     } else {
       alert('Something went wrong!');
     }
@@ -81,6 +80,7 @@ const SearchContainer = () => {
         inputValue={searchValue}
         onInputChange={setSearchValue}
         onClearBtnCLick={resetSearchValueAndResults}
+        ref={searchInputRef}
       />
       <SearchResults
         words={searchResults}

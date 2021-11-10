@@ -1,17 +1,18 @@
-import React, { useRef } from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
-const SearchForm = ({ onSubmit, inputValue, onInputChange, onClearBtnCLick }) => {
-  const inputRef = useRef(null);
+const SearchForm = forwardRef((props, ref) => {
+  const { onSubmit, inputValue, onInputChange, onClearBtnCLick } = props;
 
   return (
     <form onSubmit={onSubmit}>
       <input
+        ref={ref}
         name="search"
         placeholder="Enter word for search..."
         value={inputValue}
         onChange={(e) => onInputChange(e.target.value)}
-        ref={inputRef}
+        maxLength={30}
       />
       <button
         type="submit"
@@ -22,16 +23,13 @@ const SearchForm = ({ onSubmit, inputValue, onInputChange, onClearBtnCLick }) =>
       <button
         type="button"
         disabled={!Boolean(inputValue)}
-        onClick={() => {
-          onClearBtnCLick();
-          inputRef.current.focus();
-        }}
+        onClick={onClearBtnCLick}
       >
         Clear
       </button>
     </form>
   );
-};
+});
 
 SearchForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
