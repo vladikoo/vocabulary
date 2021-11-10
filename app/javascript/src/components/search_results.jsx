@@ -1,12 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Word from "./word";
 
-const SearchResults = ({ words }) => (
+const SearchResults = ({ words, onWordDeleteClick }) => (
   <div className="search-results">
     <ul>
-      {words.map((word) => (
-        <li key={word.id}>{word.text}</li>
-      ))}
+      {words.map((word) =>
+        <Word
+          key={word.id}
+          text={word.text}
+          onDeleteClick={() => onWordDeleteClick(word.id)}
+        />
+      )}
     </ul>
   </div>
 );
@@ -18,6 +23,7 @@ SearchResults.propTypes = {
       text: PropTypes.string,
     }).isRequired,
   ),
+  onWordDeleteClick: PropTypes.func.isRequired,
 };
 
 SearchResults.defaultProps = {

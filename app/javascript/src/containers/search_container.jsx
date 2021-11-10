@@ -15,6 +15,23 @@ const SearchContainer = () => {
     setSearchResults(data);
   };
 
+  const handleWordDelete = async (id) => {
+    const csrfToken = document.getElementsByName('csrf-token')[0].content;
+    const response = await fetch(`/api/words/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'X-CSRF-TOKEN': csrfToken,
+      },
+    });
+
+    if (response.ok) {
+      setSearchResults(searchResults.filter((word) => word.id !== id));
+      alert('Word was successfully deleted!');
+    } else {
+      alert('Something went wrong!');
+    }
+  };
+
   return (
     <div className="search-container">
       <SearchForm
@@ -22,7 +39,10 @@ const SearchContainer = () => {
         inputValue={searchValue}
         onInputChange={setSearchValue}
       />
-      <SearchResults words={searchResults} />
+      <SearchResults
+        words={searchResults}
+        onWordDeleteClick={handleWordDelete}
+      />
     </div>
   );
 };
