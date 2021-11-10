@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 import SearchResults from '../components/search_results';
 import SearchForm from '../components/search_form';
 import csrfToken from '../utils';
@@ -43,10 +44,9 @@ const SearchContainer = () => {
 
     if (response.ok) {
       setSearchResults(searchResults.filter((word) => word.id !== id));
-      // TODO: Replace alerts later
-      alert('Word was successfully deleted!');
+      toast.success('Word was successfully deleted!');
     } else {
-      alert('Something went wrong!');
+      toast.error('Something went wrong!');
     }
   };
 
@@ -63,13 +63,12 @@ const SearchContainer = () => {
     const data = await response.json();
 
     if (data.id) {
-      // TODO: Replace alerts later
-      alert('Word was successfully created!');
+      toast.success('Word was successfully created!');
       setSearchResults([...searchResults, data])
       setSearchValue('');
       searchInputRef.current.focus();
     } else {
-      alert('Something went wrong!');
+      toast.error('Something went wrong!');
     }
   };
 
