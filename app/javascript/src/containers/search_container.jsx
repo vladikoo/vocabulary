@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import axios from 'axios';
+import axios from '../axios';
 import SearchResults from '../components/search_results';
 import SearchForm from '../components/search_form';
-import csrfToken from '../utils';
 
 const SearchContainer = () => {
   const [searchValue, setSearchValue] = useState('');
@@ -37,13 +36,8 @@ const SearchContainer = () => {
   };
 
   const handleWordDeleting = async (id) => {
-    // TODO: Configure single axios instance with prefilled headers
     try {
-      await axios.delete(`/api/words/${id}`, {
-        headers: {
-          'X-CSRF-TOKEN': csrfToken(),
-        },
-      });
+      await axios.delete(`/api/words/${id}`);
 
       setSearchResults(searchResults.filter((word) => word.id !== id));
       toast.success('Word was successfully deleted!');
@@ -53,11 +47,10 @@ const SearchContainer = () => {
   };
 
   const handleWordCreating = async () => {
-    const reqData = { word: { text: searchValue } };
-    const headers = { 'X-CSRF-TOKEN': csrfToken() };
+    const params = { word: { text: searchValue } };
 
     try {
-      const response = await axios.post(`/api/words`, reqData, { headers });
+      const response = await axios.post(`/api/words`, params);
 
       setSearchResults([...searchResults, response.data])
       setSearchValue('');

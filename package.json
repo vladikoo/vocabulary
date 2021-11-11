@@ -41,7 +41,7 @@
       "<rootDir>/jest-setup.js"
     ],
     "moduleNameMapper": {
-      "\\.(css|less)$": "<rootDir>/spec/javascript/__mocks__/styleMock.js"
+      "\\.(css|less)$": "<rootDir>/spec/javascript/__mocks__/style_mock.js"
     }
   }
 }
