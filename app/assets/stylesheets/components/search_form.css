@@ -1,0 +1,30 @@
+.search-form input[type=text] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.search-form button[type=submit] {
+  background-color: green;
+}
+
+.search-form button[type=submit]:hover {
+  background-color: darkgreen;
+}
+
+.search-form button[type=button] {
+  background-color: lightblue;
+}
+
+.search-form button[type=button]:hover {
+  background-color: lightskyblue;
+}
+
+.search-form button[type=submit]:disabled, .search-form button[type=button]:disabled {
+  background-color: darkgray;
+  cursor: default;
+}

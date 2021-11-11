@@ -15,20 +15,23 @@ const SearchResults = (props) => {
 
   if (words.length) {
     content = (
-      <ul>
-        {words.map((word) =>
-          <Word
-            key={word.id}
-            id={word.id}
-            text={word.text}
-            onDeleteClick={() => onWordDeleteClick(word.id)}
-          />
-        )}
-      </ul>
+      <>
+        <h3>Search Results</h3>
+        <ul>
+          {words.map((word) =>
+            <Word
+              key={word.id}
+              id={word.id}
+              text={word.text}
+              onDeleteClick={() => onWordDeleteClick(word.id)}
+            />
+          )}
+        </ul>
+      </>
     );
   } else if (searchWasTriggered) {
     content = (
-      <>
+      <div data-testid="no-search-results">
         <p>No search results for: <b>{searchValue}</b></p>
         <button
           type="button"
@@ -36,12 +39,12 @@ const SearchResults = (props) => {
         >
           Add Word
         </button>
-      </>
+      </div>
     );
   }
 
   return (
-    <div data-testid="search-results" className="search-results">
+    <div className="search-results">
       {content}
     </div>
   );

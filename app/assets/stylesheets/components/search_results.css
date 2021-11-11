@@ -1,0 +1,13 @@
+ul {
+  text-align: left;
+  padding: 0;
+}
+
+ul li {
+  margin: 5px;
+}
+
+.search-results .cross-icon {
+  color: red;
+  cursor: pointer;
+}

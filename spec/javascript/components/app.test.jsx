@@ -71,10 +71,10 @@ describe('App', () => {
         });
       });
 
-      it('displays "Delete" button for each word', async () => {
-        const deleteButtons = await screen.findAllByRole('button', { name: /delete/i });
+      it('displays "Delete" icon for each word', async () => {
+        const deleteIcons = await screen.findAllByTestId('delete-icon');
 
-        expect(deleteButtons.length).toBe(API_RESPONSES.searchResults.length);
+        expect(deleteIcons.length).toBe(API_RESPONSES.searchResults.length);
       });
 
       it('disables "Submit" button until search value is changed', async () => {
@@ -98,15 +98,15 @@ describe('App', () => {
         });
       });
 
-      describe('upon "Delete" btn click', () => {
+      describe('upon "Delete" icon click', () => {
         describe('deleting was successful', () => {
           it('removes word from search results and displays success message', async () => {
             await waitFor(() => screen.getAllByRole('listitem'));
 
             const firstWord = screen.queryByTestId('word-1');
-            const firstWordDeleteBtn = within(firstWord).queryByRole('button', { name: /delete/i} );
+            const firstWordDeleteIcon = within(firstWord).getByTestId('delete-icon');
 
-            userEvent.click(firstWordDeleteBtn);
+            userEvent.click(firstWordDeleteIcon);
 
             await waitFor(() => {
               expect(screen.queryByTestId('word-1')).toBeNull();
@@ -131,9 +131,9 @@ describe('App', () => {
             await waitFor(() => screen.getAllByRole('listitem'));
 
             const firstWord = screen.queryByTestId('word-1');
-            const firstWordDeleteBtn = within(firstWord).queryByRole('button', { name: /delete/i} );
+            const firstWordDeleteIcon = within(firstWord).getByTestId('delete-icon');
 
-            userEvent.click(firstWordDeleteBtn);
+            userEvent.click(firstWordDeleteIcon);
 
             await screen.findByTestId('word-1');
 
@@ -163,7 +163,7 @@ describe('App', () => {
 
       it('displays expected message with "Add Word" button', async () => {
         expect(
-          await screen.findByTestId('search-results')
+          await screen.findByTestId('no-search-results')
         ).toHaveTextContent('No search results for: Hello');
 
         expect(screen.getByRole('button', { name: /add word/i })).toBeInTheDocument();
@@ -177,7 +177,7 @@ describe('App', () => {
             userEvent.click(addWordBtn);
 
             await waitFor(() => {
-              const newWord = screen.getByTestId('word-4');
+              const newWord = screen.getByTestId(/word/);
 
               expect(newWord).toBeInTheDocument();
               expect(newWord).toHaveTextContent(API_RESPONSES.newWord.text);

@@ -11,9 +11,10 @@ const SearchForm = forwardRef((props, ref) => {
   } = props;
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className="search-form">
       <input
         ref={ref}
+        type="text"
         name="search"
         placeholder="Enter word for search..."
         value={inputValue}

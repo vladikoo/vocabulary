@@ -1,0 +1,18 @@
+.app {
+  text-align: center;
+  width: 55%;
+  margin: auto;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+  width: 20%;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: green;
+  text-align: center;
+}

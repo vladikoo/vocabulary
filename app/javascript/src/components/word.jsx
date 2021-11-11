@@ -1,11 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Word = ({ id, text, onDeleteClick }) => (
-  <li data-testid={`word-${id}`}>
-    {text} <button type="button" onClick={onDeleteClick}>Delete</button>
-  </li>
-);
+const Word = ({ id, text, onDeleteClick }) => {
+  const deleteIcon = (
+    <i
+      data-testid="delete-icon"
+      className="cross-icon fa fa-close"
+      title="Delete Word"
+      onClick={onDeleteClick}
+    />
+  );
+
+  return (
+    <li data-testid={`word-${id}`}>
+      {text} {deleteIcon}
+    </li>
+  );
+};
 
 Word.propTypes = {
   id: PropTypes.number.isRequired,
