@@ -134,7 +134,7 @@ describe('App', () => {
 
             userEvent.click(firstWordDeleteIcon);
 
-            await screen.findByTestId('word-1');
+            await waitFor(() => screen.getByTestId('word-1'));
 
             expect(await screen.findByRole('alert')).toHaveTextContent('Something went wrong!');
           });
