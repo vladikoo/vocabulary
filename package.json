@@ -21,6 +21,8 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "babel-jest": "^27.3.1",
+    "eslint": "^8.2.0",
+    "eslint-plugin-react": "^7.27.0",
     "jest": "^27.3.1",
     "msw": "^0.35.0",
     "webpack-dev-server": "^3"

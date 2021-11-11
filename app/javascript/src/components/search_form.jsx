@@ -23,13 +23,13 @@ const SearchForm = forwardRef((props, ref) => {
       />
       <button
         type="submit"
-        disabled={!Boolean(inputValue) || searchWasTriggered}
+        disabled={!inputValue || searchWasTriggered}
       >
         Submit
       </button>
       <button
         type="button"
-        disabled={!Boolean(inputValue)}
+        disabled={!inputValue}
         onClick={onClearBtnCLick}
       >
         Clear
@@ -49,5 +49,7 @@ SearchForm.propTypes = {
 SearchForm.defaultProps = {
   inputValue: '',
 };
+
+SearchForm.displayName = 'SearchForm';
 
 export default SearchForm;

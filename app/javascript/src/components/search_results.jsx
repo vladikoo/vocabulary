@@ -59,10 +59,13 @@ SearchResults.propTypes = {
   ),
   onWordDeleteClick: PropTypes.func.isRequired,
   searchWasTriggered: PropTypes.bool.isRequired,
+  searchValue: PropTypes.string,
+  onAddWordBtnClick: PropTypes.func.isRequired,
 };
 
 SearchResults.defaultProps = {
   words: [],
+  searchValue: '',
 };
 
 export default SearchResults;
