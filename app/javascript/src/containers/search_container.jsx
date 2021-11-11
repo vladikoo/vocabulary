@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 import SearchResults from '../components/search_results';
 import SearchForm from '../components/search_form';
 import csrfToken from '../utils';
@@ -9,6 +10,10 @@ const SearchContainer = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [searchWasTriggered, setSearchWasTriggered] = useState(false);
   const searchInputRef = useRef(null);
+
+  useEffect(() => {
+    searchInputRef.current.focus();
+  }, []);
 
   useEffect(() => {
     if (searchWasTriggered) {
@@ -25,49 +30,40 @@ const SearchContainer = () => {
   const handleSearchRequest = async (e) => {
     e.preventDefault();
 
-    if (searchWasTriggered) return null;
+    const response = await axios.get(`/api/words?search=${searchValue}`);
 
-    const response = await fetch(`/api/words?search=${searchValue}`);
-    const data = await response.json();
-
-    setSearchResults(data);
+    setSearchResults(response.data);
     setSearchWasTriggered(true);
   };
 
   const handleWordDeleting = async (id) => {
-    const response = await fetch(`/api/words/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'X-CSRF-TOKEN': csrfToken(),
-      },
-    });
+    // TODO: Configure single axios instance with prefilled headers
+    try {
+      await axios.delete(`/api/words/${id}`, {
+        headers: {
+          'X-CSRF-TOKEN': csrfToken(),
+        },
+      });
 
-    if (response.ok) {
       setSearchResults(searchResults.filter((word) => word.id !== id));
       toast.success('Word was successfully deleted!');
-    } else {
+    } catch (e) {
       toast.error('Something went wrong!');
     }
   };
 
   const handleWordCreating = async () => {
-    const response = await fetch(`/api/words`, {
-      method: 'POST',
-      headers: {
-        'X-CSRF-TOKEN': csrfToken(),
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ word: { text: searchValue } }),
-    });
+    const reqData = { word: { text: searchValue } };
+    const headers = { 'X-CSRF-TOKEN': csrfToken() };
 
-    const data = await response.json();
+    try {
+      const response = await axios.post(`/api/words`, reqData, { headers });
 
-    if (data.id) {
-      toast.success('Word was successfully created!');
-      setSearchResults([...searchResults, data])
+      setSearchResults([...searchResults, response.data])
       setSearchValue('');
       searchInputRef.current.focus();
-    } else {
+      toast.success('Word was successfully created!');
+    } catch (e) {
       toast.error('Something went wrong!');
     }
   };
@@ -80,6 +76,7 @@ const SearchContainer = () => {
         onInputChange={setSearchValue}
         onClearBtnCLick={resetSearchValueAndResults}
         ref={searchInputRef}
+        searchWasTriggered={searchWasTriggered}
       />
       <SearchResults
         words={searchResults}

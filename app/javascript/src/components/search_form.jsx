@@ -2,7 +2,13 @@ import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
 const SearchForm = forwardRef((props, ref) => {
-  const { onSubmit, inputValue, onInputChange, onClearBtnCLick } = props;
+  const {
+    onSubmit,
+    inputValue,
+    onInputChange,
+    onClearBtnCLick,
+    searchWasTriggered,
+  } = props;
 
   return (
     <form onSubmit={onSubmit}>
@@ -16,7 +22,7 @@ const SearchForm = forwardRef((props, ref) => {
       />
       <button
         type="submit"
-        disabled={!Boolean(inputValue)}
+        disabled={!Boolean(inputValue) || searchWasTriggered}
       >
         Submit
       </button>
@@ -36,6 +42,7 @@ SearchForm.propTypes = {
   inputValue: PropTypes.string,
   onInputChange: PropTypes.func.isRequired,
   onClearBtnCLick: PropTypes.func.isRequired,
+  searchWasTriggered: PropTypes.bool.isRequired,
 };
 
 SearchForm.defaultProps = {

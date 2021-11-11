@@ -19,6 +19,7 @@ const SearchResults = (props) => {
         {words.map((word) =>
           <Word
             key={word.id}
+            id={word.id}
             text={word.text}
             onDeleteClick={() => onWordDeleteClick(word.id)}
           />
@@ -33,14 +34,14 @@ const SearchResults = (props) => {
           type="button"
           onClick={onAddWordBtnClick}
         >
-          Add to the vocabulary
+          Add Word
         </button>
       </>
     );
   }
 
   return (
-    <div className="search-results">
+    <div data-testid="search-results" className="search-results">
       {content}
     </div>
   );
